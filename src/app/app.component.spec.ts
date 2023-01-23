@@ -26,10 +26,36 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('buscaminas-app');
   });
 
-  it('should render title', () => {
+  it(`Create Board `, () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('buscaminas-app app is running!');
+    const app = fixture.componentInstance;
+    app.createBoard();
+    expect(app.board.length).toBeGreaterThanOrEqual(100);
   });
+
+  it(`set Mines`, () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    app.createBoard();
+    expect(app.totalMines).toBeGreaterThanOrEqual(10);
+  });
+
+  it(`selected Cell`, async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    await app.createBoard();
+    app.selectedCell(5,9);
+    expect(app.board[app.lastPosition].visible).toEqual(true);
+  });
+
+
+  it(`reset game`, async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    await app.createBoard();
+    await app.selectedCell(0,1);
+    await app.reset();
+    expect(app.gameOver).toEqual(false);
+  });
+
 });
